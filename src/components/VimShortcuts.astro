@@ -315,6 +315,20 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 				const items = getListItems();
 				if (items.length > 0) { focusListItem(Math.max(0, focusIdx - 1)); showBadge("k"); return; }
 			}
+// ] → next heading, [ → previous heading
+			if (e.key === "]" || e.key === "[") {
+				const headings = getHeadings();
+				if (headings.length > 0) {
+					if (e.key === "]") {
+						const next = headings.find(h => h.getBoundingClientRect().top > 10);
+						if (next) { next.scrollIntoView({ behavior: "smooth", block: "start" }); showBadge("]"); }
+					} else {
+						const above = headings.filter(h => h.getBoundingClientRect().top < -10);
+						if (above.length > 0) { above[above.length - 1].scrollIntoView({ behavior: "smooth", block: "start" }); showBadge("["); }
+					}
+					return;
+				}
+			}
 
 			// 1-9 heading jump
 			const num = parseInt(e.key);
