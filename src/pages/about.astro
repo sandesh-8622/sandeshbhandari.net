@@ -1,0 +1,54 @@
+---
+import SocialList from "@/components/SocialList.astro";
+import PageLayout from "@/layouts/Base.astro";
+
+const meta = {
+	description: "About Sandesh Bhandari - Computer Science Student & Aspiring Web Developer",
+	title: "About Me",
+};
+---
+
+<PageLayout meta={meta}>
+	<div class="prose prose-sm prose-cactus max-w-none">
+		<h1 class="title mb-8">Hi, I'm Sandesh Bhandari</h1>
+		<p>
+			I've always been fascinated by computers, logic and how everything works in systems.
+			In my free time I like playing
+			<a class="cactus-link inline-block" href="https://lichess.org/@/sandesh3388" target="_blank" rel="noreferrer">chess</a>,
+			listening to
+			<a class="cactus-link inline-block" href="https://open.spotify.com/user/31ap2qieidautkrv7cg5agsr57qi?si=ec2c8d054b4a4719" target="_blank" rel="noreferrer">music</a>,
+			reading
+			<a class="cactus-link inline-block" href="https://www.goodreads.com/user/show/157024059-sandesh-bhandari" target="_blank" rel="noreferrer">books</a>
+			and watching
+			<a class="cactus-link inline-block" href="https://letterboxd.com/sandeshbhandari/" target="_blank" rel="noreferrer">films</a>.
+			I'm not very active on
+			<a class="cactus-link inline-block" href="https://www.instagram.com/sandesh2wavy/" target="_blank" rel="noreferrer">Instagram</a> but occasionally post on
+			<a class="cactus-link inline-block" href="http://vsco.co/sandesh2wavy" target="_blank" rel="noreferrer">VSCO</a>.
+			I also write blogs, read them and let me know what you think.
+		</p>
+		<p>
+			You can find me on these links, or reach out directly at
+			<button
+				id="copy-email"
+				class="cactus-link inline-block cursor-pointer border-none bg-transparent p-0 font-inherit text-inherit"
+				title="Click to copy email"
+			>contact@sandeshbhandari.com</button>.
+			It would always be great to hear from you!
+		</p>
+		<div class="not-prose">
+			<SocialList />
+		</div>
+	</div>
+</PageLayout>
+
+<script>
+	const btn = document.getElementById("copy-email");
+	if (btn) {
+		btn.addEventListener("click", async () => {
+			await navigator.clipboard.writeText("contact@sandeshbhandari.com");
+			const original = btn.textContent;
+			btn.textContent = "copied!";
+			setTimeout(() => { btn.textContent = original; }, 1500);
+		});
+	}
+</script>

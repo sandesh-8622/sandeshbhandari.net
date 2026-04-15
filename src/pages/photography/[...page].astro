@@ -1,0 +1,117 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import type { GetStaticPaths, Page } from "astro";
+import Pagination from "@/components/Paginator.astro";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const MAX_PHOTOS_PER_PAGE = 18;
+	const allPhotos = await getCollection("photography");
+	return paginate(allPhotos.sort(collectionDateSort), { pageSize: MAX_PHOTOS_PER_PAGE });
+}) satisfies GetStaticPaths;
+
+interface Props {
+	page: Page<CollectionEntry<"photography">>;
+}
+
+const { page } = Astro.props;
+
+const meta = {
+	description: "Browse my photography portfolio",
+	title: "Photography",
+};
+
+const paginationProps = {
+	...(page.url.prev && {
+		prevUrl: {
+			text: "← Previous Page",
+			url: page.url.prev,
+		},
+	}),
+	...(page.url.next && {
+		nextUrl: {
+			text: "Next Page →",
+			url: page.url.next,
+		},
+	}),
+};
+---
+
+<PageLayout meta={meta}>
+	<section>
+		<h1 class="title mb-8">Photography</h1>
+		<div class="masonry">
+			{
+				page.data.map((photo) => (
+					<a
+						href={`/photography/${photo.id}/`}
+						class="masonry-item group"
+					>
+						<img
+							src={photo.data.src}
+							alt={photo.data.alt}
+							class="w-full rounded-lg object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+							loading="lazy"
+						/>
+						<div class="masonry-overlay">
+							<p class="text-sm font-medium text-white">{photo.data.title}</p>
+							{photo.data.category && (
+								<span class="text-[10px] uppercase tracking-wider text-white/60">
+									{photo.data.category}
+								</span>
+							)}
+						</div>
+					</a>
+				))
+			}
+		</div>
+		<Pagination {...paginationProps} />
+	</section>
+</PageLayout>
+
+<style>
+	.masonry {
+		columns: 2;
+		column-gap: 0.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.masonry {
+			columns: 3;
+			column-gap: 0.625rem;
+		}
+	}
+
+	.masonry-item {
+		display: block;
+		break-inside: avoid;
+		margin-bottom: 0.5rem;
+		position: relative;
+		overflow: hidden;
+		border-radius: 0.5rem;
+	}
+
+	@media (min-width: 768px) {
+		.masonry-item {
+			margin-bottom: 0.625rem;
+		}
+	}
+
+	.masonry-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 0.75rem;
+		background: linear-gradient(to top, rgba(0,0,0,0.55), transparent 50%);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		border-radius: 0.5rem;
+	}
+
+	.masonry-item:hover .masonry-overlay {
+		opacity: 1;
+	}
+</style>

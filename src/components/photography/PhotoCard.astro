@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+	photo: CollectionEntry<"photography">;
+}
+
+const { photo } = Astro.props;
+---
+
+<a
+	href={`/photography/${photo.id}/`}
+	class="group block overflow-hidden rounded-sm"
+>
+	<div class="relative overflow-hidden">
+		<img
+			src={photo.data.src}
+			alt={photo.data.alt}
+			class="block h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
+			loading="lazy"
+		/>
+		<div
+			class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+		>
+			<div class="p-4">
+				<p class="text-sm font-medium text-white">{photo.data.title}</p>
+				{
+					photo.data.category && (
+						<span class="text-xs uppercase tracking-wider text-white/70">
+							{photo.data.category}
+						</span>
+					)
+				}
+			</div>
+		</div>
+	</div>
+</a>

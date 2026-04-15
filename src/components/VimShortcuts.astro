@@ -1,0 +1,333 @@
+---
+import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
+---
+
+<!-- List page hint: "j k to navigate  Enter to open" — only visible on list pages -->
+<div
+	id="vim-list-hint"
+	class="text-muted mb-4 hidden items-center gap-1.5 font-mono text-xs"
+	aria-hidden="true"
+>
+	<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">j</kbd>
+	<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">k</kbd>
+	<span>to navigate</span>
+	<kbd class="bg-global-text/8 ml-1 rounded px-1.5 py-0.5">Enter</kbd>
+	<span>to open</span>
+</div>
+
+<!-- Keystroke visualizer badge — bottom right circle -->
+<div
+	id="vim-badge"
+	class="pointer-events-none fixed bottom-5 right-5 z-50 hidden items-center justify-center sm:flex"
+	aria-hidden="true"
+>
+	<div
+		id="vim-badge-inner"
+		class="flex h-9 min-w-9 items-center justify-center rounded-full bg-zinc-800 px-2.5 font-mono text-sm text-white opacity-0 shadow-lg transition-opacity duration-150 dark:bg-zinc-200 dark:text-black"
+	></div>
+</div>
+
+<!-- Keyboard shortcuts modal -->
+<dialog
+	id="vim-help"
+	class="bg-global-bg text-global-text fixed inset-0 z-[100] m-auto h-auto max-h-[80vh] w-full max-w-md overflow-y-auto rounded-lg border border-current/10 p-0 font-mono text-sm shadow-2xl backdrop:bg-black/50"
+>
+	<div class="sticky top-0 bg-inherit p-5 pb-3">
+		<h2 class="text-base font-bold">Keyboard shortcuts</h2>
+	</div>
+	<div class="space-y-5 px-5 pb-3">
+		<!-- Navigation -->
+		<div>
+			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Navigation</p>
+			<div class="space-y-2 text-xs">
+				{NAV_SHORTCUTS.map(s => (
+					<div class="flex items-center justify-between">
+						<span>Go to {s.label}</span>
+						<span class="flex items-center gap-1">
+							<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">g</kbd>
+							<span class="text-muted text-[10px]">then</span>
+							<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">{s.key}</kbd>
+						</span>
+					</div>
+				))}
+				<div class="flex items-center justify-between">
+					<span>Scroll to top</span>
+					<span class="flex items-center gap-1">
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">g</kbd>
+						<span class="text-muted text-[10px]">then</span>
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">g</kbd>
+					</span>
+				</div>
+			</div>
+		</div>
+		<!-- Actions -->
+		<div>
+			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Actions</p>
+			<div class="space-y-2 text-xs">
+				<div class="flex items-center justify-between">
+					<span>Search</span>
+					<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">/</kbd>
+				</div>
+				<div class="flex items-center justify-between">
+					<span>Keyboard shortcuts</span>
+					<span class="flex items-center gap-0.5">
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5" id="mod-key">Ctrl</kbd>
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">/</kbd>
+					</span>
+				</div>
+			</div>
+		</div>
+		<!-- Post Lists -->
+		<div>
+			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Post Lists</p>
+			<div class="space-y-2 text-xs">
+				<div class="flex items-center justify-between">
+					<span>Navigate posts</span>
+					<span class="flex items-center gap-0.5">
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">j</kbd>
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">k</kbd>
+					</span>
+				</div>
+				<div class="flex items-center justify-between">
+					<span>Open selected post</span>
+					<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">Enter</kbd>
+				</div>
+			</div>
+		</div>
+		<!-- Articles -->
+		<div>
+			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Articles</p>
+			<div class="space-y-2 text-xs">
+				<div class="flex items-center justify-between">
+					<span>Jump to nth heading</span>
+					<span class="flex items-center gap-0.5">
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">1</kbd>
+						<span class="text-muted">–</span>
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">9</kbd>
+					</span>
+				</div>
+				<div class="flex items-center justify-between">
+					<span>Go back to list</span>
+					<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">Esc</kbd>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="text-muted sticky bottom-0 flex items-center gap-1.5 bg-inherit px-5 py-3 text-xs">
+		<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">Esc</kbd>
+		<span>to close</span>
+	</div>
+</dialog>
+
+<script define:vars={{
+	shortcuts: JSON.stringify(NAV_SHORTCUTS),
+	prefixTimeout: PREFIX_TIMEOUT,
+}}>
+	(() => {
+		const NAV = JSON.parse(shortcuts);
+		const TIMEOUT = prefixTimeout;
+		const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.userAgent);
+
+		let gPending = false;
+		let gTimer = null;
+		let focusIdx = -1;
+
+		const badge = document.getElementById("vim-badge-inner");
+		const helpDialog = document.getElementById("vim-help");
+		const shortcutsBtn = document.getElementById("vim-shortcuts-btn");
+		const listHint = document.getElementById("vim-list-hint");
+
+		// ── Platform-aware modifier display ──────────────────
+		const modKey = document.getElementById("mod-key");
+		if (modKey && isMac) modKey.textContent = "⌘";
+
+		// ── Show list hint on pages with post lists ──────────
+		if (listHint) {
+			const allItems = getListItems();
+			if (allItems.length > 0) {
+				// Insert hint before the first list's parent section
+				const firstItem = allItems[0];
+				const parentList = firstItem.closest('ul');
+				const parent = parentList?.parentElement;
+				if (parent) {
+					parent.insertBefore(listHint, parentList);
+					listHint.style.display = "flex";
+				}
+			}
+		}
+
+		// ── Shortcuts button opens modal ─────────────────────
+		shortcutsBtn?.addEventListener("click", () => {
+			helpDialog?.showModal();
+		});
+
+		helpDialog?.addEventListener("click", (e) => {
+			if (e.target === helpDialog) helpDialog.close();
+		});
+
+		// ── Keystroke badge visualizer ────────────────────────
+		let badgeTimer = null;
+		function showBadge(text) {
+			if (!badge) return;
+			badge.textContent = text;
+			badge.style.opacity = "1";
+			clearTimeout(badgeTimer);
+			badgeTimer = setTimeout(() => {
+				badge.style.opacity = "0";
+			}, 800);
+		}
+
+		// ── Input check ──────────────────────────────────────
+		function isInputFocused() {
+			const el = document.activeElement;
+			if (!el) return false;
+			const tag = el.tagName;
+			return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || el.isContentEditable;
+		}
+
+		// ── List navigation ──────────────────────────────────
+		function getListItems() {
+			// Collect li items from all post lists on the page
+			const allLists = document.querySelectorAll('main ul');
+			if (allLists.length === 0) return [];
+			const allItems = [];
+			for (const list of allLists) {
+				// Only include lists that contain links (post lists, not tag lists etc)
+				const items = list.querySelectorAll('li');
+				for (const item of items) {
+					if (item.querySelector('a')) allItems.push(item);
+				}
+			}
+			return allItems;
+		}
+
+		function focusListItem(idx) {
+			const items = getListItems();
+			if (items.length === 0) return;
+			focusIdx = Math.max(0, Math.min(idx, items.length - 1));
+			items.forEach((li) => li.classList.remove("vim-focus"));
+			items[focusIdx].classList.add("vim-focus");
+			items[focusIdx].scrollIntoView({ block: "nearest", behavior: "smooth" });
+			const link = items[focusIdx].querySelector("a");
+			if (link) link.focus();
+		}
+
+		document.addEventListener("click", (e) => {
+			const items = getListItems();
+			const clickedInList = items.some((li) => li.contains(e.target));
+			if (!clickedInList) {
+				focusIdx = -1;
+				items.forEach((li) => li.classList.remove("vim-focus"));
+			}
+		});
+
+		// ── Heading navigation ───────────────────────────────
+		function getHeadings() {
+			const article = document.querySelector("[data-pagefind-body]") || document.querySelector("main");
+			if (!article) return [];
+			return Array.from(article.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+		}
+
+		// ── Main key handler ─────────────────────────────────
+		document.addEventListener("keydown", (e) => {
+			const inputActive = isInputFocused();
+
+			// Ctrl+/ or Cmd+/ → toggle shortcuts modal (always works)
+			if (e.key === "/" && (e.ctrlKey || e.metaKey)) {
+				e.preventDefault();
+				if (helpDialog?.open) helpDialog.close();
+				else helpDialog?.showModal();
+				showBadge(isMac ? "⌘ /" : "Ctrl /");
+				return;
+			}
+
+			// Escape always works
+			if (e.key === "Escape") {
+				if (helpDialog?.open) { helpDialog.close(); showBadge("Esc"); return; }
+				const searchDialog = document.querySelector("dialog[open]");
+				if (searchDialog) { searchDialog.close(); showBadge("Esc"); return; }
+
+				const path = window.location.pathname;
+				if (path.startsWith("/posts/") && path !== "/posts/") {
+					window.location.href = "/posts/";
+				} else if (path.startsWith("/photography/") && path !== "/photography/") {
+					window.location.href = "/photography/";
+				} else if (path.startsWith("/tags/")) {
+					window.location.href = "/posts/";
+				} else if (path !== "/") {
+					window.location.href = "/";
+				}
+				showBadge("Esc");
+				return;
+			}
+
+			if (inputActive) return;
+
+			// / → open search
+			if (e.key === "/" && !e.ctrlKey && !e.metaKey) {
+				e.preventDefault();
+				const searchBtn = document.querySelector("[data-open-modal]");
+				if (searchBtn) searchBtn.click();
+				showBadge("/");
+				return;
+			}
+
+			// g prefix
+			if (e.key === "g" && !e.ctrlKey && !e.metaKey) {
+				if (gPending) {
+					clearTimeout(gTimer);
+					gPending = false;
+					window.scrollTo({ top: 0, behavior: "smooth" });
+					showBadge("gg");
+					return;
+				}
+				gPending = true;
+				showBadge("g");
+				gTimer = setTimeout(() => { gPending = false; }, TIMEOUT);
+				return;
+			}
+
+			// g + key → navigate
+			if (gPending && !e.ctrlKey && !e.metaKey) {
+				clearTimeout(gTimer);
+				gPending = false;
+				const match = NAV.find((s) => s.key === e.key);
+				if (match) {
+					showBadge("g" + e.key);
+					window.location.href = match.path;
+					return;
+				}
+			}
+
+			// j/k list nav
+			if (e.key === "j") {
+				const items = getListItems();
+				if (items.length > 0) { focusListItem(focusIdx + 1); showBadge("j"); return; }
+			}
+			if (e.key === "k") {
+				const items = getListItems();
+				if (items.length > 0) { focusListItem(Math.max(0, focusIdx - 1)); showBadge("k"); return; }
+			}
+
+			// 1-9 heading jump
+			const num = parseInt(e.key);
+			if (num >= 1 && num <= 9 && !e.ctrlKey && !e.metaKey) {
+				const headings = getHeadings();
+				if (headings.length > 0) {
+					const targetIdx = num === 9 ? headings.length - 1 : Math.min(num - 1, headings.length - 1);
+					headings[targetIdx].scrollIntoView({ behavior: "smooth", block: "start" });
+					showBadge(String(num));
+					return;
+				}
+			}
+		});
+	})();
+</script>
+
+<style is:global>
+	.vim-focus {
+		outline: 2px solid var(--color-accent, #2bbc89);
+		outline-offset: 2px;
+		border-radius: 4px;
+	}
+</style>

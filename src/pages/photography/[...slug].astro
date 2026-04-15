@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import PageLayout from "@/layouts/Base.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+
+export const getStaticPaths = (async () => {
+	const allPhotos = await getCollection("photography");
+	return allPhotos.map((photo, index) => ({
+		params: { slug: photo.id },
+		props: {
+			photo,
+			prevPhoto: allPhotos[index - 1] ?? null,
+			nextPhoto: allPhotos[index + 1] ?? null,
+		},
+	}));
+}) satisfies GetStaticPaths;
+
+export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { photo, prevPhoto, nextPhoto } = Astro.props;
+
+const meta = {
+	description: photo.data.description || photo.data.title,
+	title: photo.data.title,
+};
+---
+
+<PageLayout meta={meta}>
+	<article class="mx-auto max-w-4xl" data-pagefind-body>
+		<div class="mb-6">
+			<a href="/photography/" class="cactus-link text-sm">&larr; Back to Gallery</a>
+		</div>
+		<figure>
+			<div class="overflow-hidden rounded-sm">
+				<img
+					src={photo.data.src}
+					alt={photo.data.alt}
+					class="h-auto w-full object-contain"
+					loading="eager"
+				/>
+			</div>
+			<figcaption class="mt-4 space-y-2">
+				<h1 class="title">{photo.data.title}</h1>
+				{photo.data.description && <p class="text-muted">{photo.data.description}</p>}
+				<div class="flex flex-wrap items-center gap-4 text-sm">
+					{
+						photo.data.category && (
+							<span class="bg-global-text/5 inline-block rounded-md px-2 py-1 text-xs uppercase tracking-wider">
+								{photo.data.category}
+							</span>
+						)
+					}
+					<FormattedDate date={photo.data.publishDate} />
+				</div>
+			</figcaption>
+		</figure>
+		<nav class="mt-8 flex justify-between border-t border-current/10 pt-6">
+			{
+				prevPhoto ? (
+					<a href={`/photography/${prevPhoto.id}/`} class="cactus-link text-sm">
+						&larr; {prevPhoto.data.title}
+					</a>
+				) : (
+					<span />
+				)
+			}
+			{
+				nextPhoto ? (
+					<a href={`/photography/${nextPhoto.id}/`} class="cactus-link text-sm">
+						{nextPhoto.data.title} &rarr;
+					</a>
+				) : (
+					<span />
+				)
+			}
+		</nav>
+	</article>
+</PageLayout>
