@@ -194,7 +194,7 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 				const style = window.getComputedStyle(list);
 				if (style.display === 'flex' || style.display === 'inline-flex') continue;
 				const items = Array.from(list.querySelectorAll('li')).filter(li => li.querySelector('a'));
-				if (items.length >= 3) {
+				if (items.length >= 1) {
 					allItems.push(...items);
 				}
 			}
