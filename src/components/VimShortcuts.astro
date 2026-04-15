@@ -2,7 +2,7 @@
 import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 ---
 
-<!-- List page hint: "j k to navigate  Enter to open" — only visible on list pages -->
+<!-- List page hint: "j k to navigate  Enter to open" -->
 <div
 	id="vim-list-hint"
 	class="text-muted mb-4 hidden items-center gap-1.5 font-mono text-xs"
@@ -141,14 +141,11 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		const modKey = document.getElementById("mod-key");
 		if (modKey && isMac) modKey.textContent = "⌘";
 
-		// ── Show list hint on pages with post lists ──────────
+		// ── Show list hint — hidden only on /about/ ──────────
 		if (listHint) {
-    const path = window.location.pathname;
-    const isListPage = path !== '/about/';
-    const allItems = getListItems();
+			const path = window.location.pathname;
 			const allItems = getListItems();
-			if (allItems.length > 0) {
-				// Insert hint before the first list's parent section
+			if (path !== '/about/' && allItems.length > 0) {
 				const firstItem = allItems[0];
 				const parentList = firstItem.closest('ul');
 				const parent = parentList?.parentElement;
@@ -190,28 +187,15 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 
 		// ── List navigation ──────────────────────────────────
 		function getListItems() {
-			// Collect li items from all post lists on the page
-			function getListItems() {
-    const allLists = document.querySelectorAll('main ul');
-    if (allLists.length === 0) return [];
-    const allItems = [];
-    for (const list of allLists) {
-        const style = window.getComputedStyle(list);
-        if (style.display === 'flex' || style.display === 'inline-flex') continue;
-        const items = Array.from(list.querySelectorAll('li')).filter(li => li.querySelector('a'));
-        if (items.length >= 3) {
-            allItems.push(...items);
-        }
-    }
-    return allItems;
-}
+			const allLists = document.querySelectorAll('main ul');
 			if (allLists.length === 0) return [];
 			const allItems = [];
 			for (const list of allLists) {
-				// Only include lists that contain links (post lists, not tag lists etc)
-				const items = list.querySelectorAll('li');
-				for (const item of items) {
-					if (item.querySelector('a')) allItems.push(item);
+				const style = window.getComputedStyle(list);
+				if (style.display === 'flex' || style.display === 'inline-flex') continue;
+				const items = Array.from(list.querySelectorAll('li')).filter(li => li.querySelector('a'));
+				if (items.length >= 3) {
+					allItems.push(...items);
 				}
 			}
 			return allItems;
