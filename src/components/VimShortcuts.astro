@@ -143,6 +143,9 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 
 		// ── Show list hint on pages with post lists ──────────
 		if (listHint) {
+    const path = window.location.pathname;
+    const isListPage = path === '/' || path.startsWith('/posts') || path.startsWith('/photography') || path.startsWith('/tags');
+    const allItems = getListItems();
 			const allItems = getListItems();
 			if (allItems.length > 0) {
 				// Insert hint before the first list's parent section
