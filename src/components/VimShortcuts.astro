@@ -188,7 +188,20 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		// ── List navigation ──────────────────────────────────
 		function getListItems() {
 			// Collect li items from all post lists on the page
-			const allLists = document.querySelectorAll('main ul');
+			function getListItems() {
+    const allLists = document.querySelectorAll('main ul');
+    if (allLists.length === 0) return [];
+    const allItems = [];
+    for (const list of allLists) {
+        const style = window.getComputedStyle(list);
+        if (style.display === 'flex' || style.display === 'inline-flex') continue;
+        const items = Array.from(list.querySelectorAll('li')).filter(li => li.querySelector('a'));
+        if (items.length >= 3) {
+            allItems.push(...items);
+        }
+    }
+    return allItems;
+}
 			if (allLists.length === 0) return [];
 			const allItems = [];
 			for (const list of allLists) {
