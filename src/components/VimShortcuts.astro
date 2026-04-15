@@ -147,10 +147,10 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 			const allItems = getListItems();
 			if (path !== '/about/' && allItems.length > 0) {
 				const firstItem = allItems[0];
-				const parentList = firstItem.closest('ul');
-				const parent = parentList?.parentElement;
-				if (parent) {
-					parent.insertBefore(listHint, parentList);
+				const firstSection = firstItem.closest('section');
+				const container = firstSection?.parentElement;
+				if (container && firstSection) {
+					container.insertBefore(listHint, firstSection);
 					listHint.style.display = "flex";
 				}
 			}
