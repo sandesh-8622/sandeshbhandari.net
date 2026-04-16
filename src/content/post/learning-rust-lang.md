@@ -1,6 +1,6 @@
 ---
 title: "learning rust lang"
-description: "rust "
+description: "rust :>"
 publishDate: "2026-04-06"
 tags: ["engineering"]
 ---
@@ -14,7 +14,7 @@ Around the time I was starting to learn rust, my roommate left for Chicago for e
 
 
 
-Anyway, I kept building projects in Rust over the next few days, applying what I had learned and reinforcing my concepts. I’d already spent time with Python and JavaScript, and just enough C++ to understand that memory management is handled very differently in each language. Python abstracts it entirely and JavaScript gives you flexibility with almost no constraints. C++ on the other hand gives you full manual control with no guardrails, and  Rust sits in its own category. We get the performance of C++ without undefined behavior, because the compiler enforces memory safety. It felt challenging at first, but over time I came to prefer it as I actually like the fact that everyone in the community tends to follow the same standards for code for Rust,  which is a really nice thing.
+Anyway, I kept building projects in Rust over the next few days, applying what I had learned and reinforcing my concepts. I’d already spent time with Python and JavaScript, and just enough C++ to understand that memory management is handled very differently in each language. Python abstracts it entirely and JavaScript gives you flexibility with almost no constraints. C++ on the other hand gives you full manual control with no guardrails, and  Rust sits in its own category. We get the performance of C++ without undefined behavior, because the compiler enforces memory safety. It felt bit challenging at first, but over time I came to prefer it as I actually like the fact that everyone in the community tends to follow the same standards for code for Rust,  which is a really nice thing.
 
 ## 2. Setup
 
