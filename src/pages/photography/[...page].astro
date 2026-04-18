@@ -41,31 +41,34 @@ const paginationProps = {
 <PageLayout meta={meta}>
 	<section>
 		<h1 class="title mb-8">Photography</h1>
-		<div class="masonry">
+		<ul class="masonry" role="list">
 			{
-				page.data.map((photo) => (
-					<a
-						href={`/photography/${photo.id}/`}
-						class="masonry-item group"
-					>
-						<img
-							src={photo.data.src}
-							alt={photo.data.alt}
-							class="w-full rounded-lg object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-							loading="lazy"
-						/>
-						<div class="masonry-overlay">
-							<p class="text-sm font-medium text-white">{photo.data.title}</p>
-							{photo.data.category && (
-								<span class="text-[10px] uppercase tracking-wider text-white/60">
-									{photo.data.category}
-								</span>
-							)}
-						</div>
-					</a>
+				page.data.map((photo, i) => (
+					<li class="masonry-item">
+						<a
+							href={`/photography/${photo.id}/`}
+							class="group block"
+						>
+							<img
+								src={photo.data.src}
+								alt={photo.data.alt}
+								class="w-full rounded-lg object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+								loading={i < 6 ? "eager" : "lazy"}
+								decoding="async"
+							/>
+							<div class="masonry-overlay">
+								<p class="text-sm font-medium text-white">{photo.data.title}</p>
+								{photo.data.category && (
+									<span class="text-[10px] uppercase tracking-wider text-white/60">
+										{photo.data.category}
+									</span>
+								)}
+							</div>
+						</a>
+					</li>
 				))
 			}
-		</div>
+		</ul>
 		<Pagination {...paginationProps} />
 	</section>
 </PageLayout>
@@ -74,6 +77,9 @@ const paginationProps = {
 	.masonry {
 		columns: 2;
 		column-gap: 0.5rem;
+		list-style: none;
+		padding: 0;
+		margin: 0;
 	}
 
 	@media (min-width: 768px) {
@@ -84,7 +90,6 @@ const paginationProps = {
 	}
 
 	.masonry-item {
-		display: block;
 		break-inside: avoid;
 		margin-bottom: 0.5rem;
 		position: relative;
@@ -96,6 +101,14 @@ const paginationProps = {
 		.masonry-item {
 			margin-bottom: 0.625rem;
 		}
+	}
+
+	/* Reserve vertical space so masonry columns don't reflow
+	   when images below load in and change height */
+	.masonry-item img {
+		min-height: 200px;
+		background-color: rgb(0 0 0 / 0.04);
+		display: block;
 	}
 
 	.masonry-overlay {

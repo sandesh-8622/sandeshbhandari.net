@@ -58,7 +58,7 @@ const meta = {
 		<nav class="mt-8 flex justify-between border-t border-current/10 pt-6">
 			{
 				prevPhoto ? (
-					<a href={`/photography/${prevPhoto.id}/`} class="cactus-link text-sm">
+					<a href={`/photography/${prevPhoto.id}/`} rel="prev" class="cactus-link text-sm">
 						&larr; {prevPhoto.data.title}
 					</a>
 				) : (
@@ -67,7 +67,7 @@ const meta = {
 			}
 			{
 				nextPhoto ? (
-					<a href={`/photography/${nextPhoto.id}/`} class="cactus-link text-sm">
+					<a href={`/photography/${nextPhoto.id}/`} rel="next" class="cactus-link text-sm">
 						{nextPhoto.data.title} &rarr;
 					</a>
 				) : (
