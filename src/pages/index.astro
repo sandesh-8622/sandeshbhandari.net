@@ -1,12 +1,13 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostPreview from "@/components/blog/PostPreview.astro";
+import SocialList from "@/components/SocialList.astro";
 import { getAllPosts } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
 // Posts
-const MAX_POSTS = 10;
+const MAX_POSTS = 3;
 const allPosts = await getAllPosts();
 const allPostsByDate = allPosts.sort(collectionDateSort) as CollectionEntry<"post">[];
 const latestPosts = allPostsByDate.slice(0, MAX_POSTS);
@@ -25,17 +26,68 @@ const allPhotos = await getCollection("photography");
 const latestPhotos = allPhotos
 	.sort(collectionDateSort)
 	.slice(0, MAX_PHOTOS) as CollectionEntry<"photography">[];
+
+// Projects
+const projects = [
+	{
+		title: "Volunteer IT Technician",
+		subtitle: "3D Technology Department, CFC - Wings to Dreams",
+		description: "I collaborated on creating 3D-printed tools, including tactile models for visually impaired students. Our work garnered national recognition, featuring in major newspapers and articles that highlighted our team's impact.",
+		tags: ["3D Printing", "Research", "Education"],
+		link: "",
+	},
+	{
+		title: "Research Assistant",
+		subtitle: "IAMP, University of Idaho",
+		description: "As an undergraduate research assistant at IAMP, University of Idaho, I collaborate with a team to analyze agricultural data using Python and R, developing climate-resilient models to enhance sustainability and improve yield efficiency.",
+		tags: ["Python", "R", "Data Analysis", "Research"],
+		link: "",
+	},
+	{
+		title: "Video Editor",
+		subtitle: "Content Creation",
+		description: "I created core videos on gaming and philosophy, emphasizing motion graphics, color grading, and sound design using tools like Premiere Pro, DaVinci Resolve, and Photoshop while honing my writing skills.",
+		tags: ["Premiere Pro", "DaVinci Resolve", "Photoshop"],
+		link: "",
+	},
+	{
+		title: "Class 12 NEB Guide App",
+		subtitle: "React Native",
+		description: "I worked as a front-end developer to build a mobile app using React Native. The app featured offline access, advanced search, and real-time updates through CMS, providing students with seamless access to study materials.",
+		tags: ["React Native", "Mobile", "CMS"],
+		link: "https://play.google.com/store/apps/details?id=com.guide.nebtwelve",
+	},
+];
 ---
 
-<PageLayout meta={{ title: "Home" }}>
+<PageLayout meta={{ title: "About" }}>
 	<section>
-		<h1 class="title mb-12">Hi, I'm Sandesh Bhandari</h1>
-		<p class="mb-4">
-			A Computer Science Student & Aspiring Web Developer. I've always been fascinated by computers,
-			logic and how everything works in systems. I build fullstack web applications and love
-			exploring new technologies. Check out my stuff below :)
-		</p>
-
+		<div class="prose prose-sm prose-cactus max-w-none">
+			<h1 class="title mb-8">Hi,</h1>
+			<p>
+				I'm Sandesh. I'm a CS sophomore in the US working on AI infrastructure and MLOps. I build with Python and TypeScript across Docker, Kubernetes, and AWS.
+			</p>
+			<p>
+				I like taking things from 0 to 1 and keeping them running reliably. Understanding why they work is the part that interests me most.
+			</p>
+			<p>
+				In my free time I like playing
+				<a class="cactus-link inline-block" href="https://lichess.org/@/sandesh3388" target="_blank" rel="noreferrer">chess</a>,
+				listening to
+				<a class="cactus-link inline-block" href="https://open.spotify.com/user/31ap2qieidautkrv7cg5agsr57qi?si=ec2c8d054b4a4719" target="_blank" rel="noreferrer">music</a>,
+				reading
+				<a class="cactus-link inline-block" href="https://www.goodreads.com/user/show/157024059-sandesh-bhandari" target="_blank" rel="noreferrer">books</a>
+				and watching
+				<a class="cactus-link inline-block" href="https://letterboxd.com/sandeshbhandari/" target="_blank" rel="noreferrer">films</a>.
+				I'm not very active on
+				<a class="cactus-link inline-block" href="https://www.instagram.com/sandesh2wavy/" target="_blank" rel="noreferrer">Instagram</a> but occasionally post on
+				<a class="cactus-link inline-block" href="http://vsco.co/sandesh2wavy" target="_blank" rel="noreferrer">VSCO</a>.
+				Check out my stuff below :)
+			</p>
+			<div class="not-prose">
+				<SocialList />
+			</div>
+		</div>
 	</section>
 	{
 		pinnedPosts.length > 0 && (
@@ -52,7 +104,9 @@ const latestPhotos = allPhotos
 		)
 	}
 	<section class="mt-16">
-		<h2 class="title text-accent mb-6 text-xl"><a href="/posts/">Posts</a></h2>
+		<h2 class="title text-accent mb-6 text-xl">
+			<a href="/posts/">Latest Blog</a>
+		</h2>
 		<ul class="space-y-4" role="list">
 			{
 				latestPosts.map((p) => (
@@ -62,29 +116,74 @@ const latestPhotos = allPhotos
 				))
 			}
 		</ul>
+		<div class="mt-6 text-right">
+			<a href="/posts/" class="cactus-link text-sm">more &rarr;</a>
+		</div>
 	</section>
 	{
 		latestPhotos.length > 0 && (
 			<section class="mt-16">
 				<h2 class="title text-accent mb-6 text-xl">
-					<a href="/photography/">Photography</a>
+					<a href="/photography/">Latest Photography</a>
 				</h2>
-				<div class="grid grid-cols-2 gap-2 md:grid-cols-3">
+				<ul class="grid grid-cols-2 gap-2 md:grid-cols-3" role="list">
 					{latestPhotos.map((photo) => (
-						<a
-							href={`/photography/${photo.id}/`}
-							class="group block aspect-square overflow-hidden rounded-sm"
-						>
-							<img
-								src={photo.data.src}
-								alt={photo.data.alt}
-								class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-								loading="lazy"
-							/>
-						</a>
+						<li>
+							<a
+								href={`/photography/${photo.id}/`}
+								class="group block aspect-square overflow-hidden rounded-sm"
+							>
+								<img
+									src={photo.data.src}
+									alt={photo.data.alt}
+									class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+									loading="lazy"
+								/>
+							</a>
+						</li>
 					))}
+				</ul>
+				<div class="mt-6 text-right">
+					<a href="/photography/" class="cactus-link text-sm">more &rarr;</a>
 				</div>
 			</section>
 		)
 	}
+	<section class="mt-16">
+		<h2 class="title text-accent mb-6 text-xl">
+			<a href="/work/">Work</a>
+		</h2>
+		<ul class="grid gap-4 sm:grid-cols-2" role="list">
+			{
+				projects.map((project) => (
+					<li class="bg-global-text/5 flex flex-col rounded-md p-5">
+						<a
+							href={project.link || "/work/"}
+							target={project.link ? "_blank" : undefined}
+							rel={project.link ? "noreferrer" : undefined}
+							class="contents"
+						>
+							<p class="text-accent mb-1 text-xs font-medium uppercase tracking-wider">
+								{project.subtitle}
+							</p>
+							<h3 class="mb-3 text-lg font-medium">{project.title}</h3>
+							<div class="mb-3 flex flex-wrap gap-1.5">
+								{project.tags.map((tag) => (
+									<span class="bg-global-text/10 rounded px-2 py-0.5 text-xs">
+										{tag}
+									</span>
+								))}
+							</div>
+							<p class="mb-4 flex-1 text-sm leading-relaxed">{project.description}</p>
+							{project.link && (
+								<span class="cactus-link mt-auto inline-block text-sm">
+									Check Out &rarr;
+								</span>
+							)}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
 </PageLayout>
