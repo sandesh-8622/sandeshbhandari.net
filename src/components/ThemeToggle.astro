@@ -1,12 +1,29 @@
 <theme-toggle class="ms-2 sm:ms-4">
-	<button class="hover:text-accent relative h-9 w-9 cursor-pointer rounded-md p-2" type="button">
-		<span class="sr-only">Dark Theme</span>
+	<button class="hover:text-accent relative h-9 w-9 cursor-pointer rounded-md p-2" type="button" title="System theme">
+		<span class="sr-only">Toggle theme</span>
+		<!-- System icon (monitor) -->
 		<svg
 			aria-hidden="true"
-			class="absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-100 opacity-100 transition-all dark:scale-0 dark:opacity-0"
+			class="theme-icon absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all"
 			fill="none"
 			focusable="false"
-			id="sun-svg"
+			data-icon="system"
+			stroke="currentColor"
+			stroke-width="1.5"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+			<line x1="8" y1="21" x2="16" y2="21"></line>
+			<line x1="12" y1="17" x2="12" y2="21"></line>
+		</svg>
+		<!-- Sun icon -->
+		<svg
+			aria-hidden="true"
+			class="theme-icon absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all"
+			fill="none"
+			focusable="false"
+			data-icon="light"
 			stroke-width="1.5"
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
@@ -16,36 +33,29 @@
 				stroke="currentColor"
 				stroke-linecap="round"
 				stroke-linejoin="round"></path>
-			<path d="M22 12L23 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
+			<path d="M22 12L23 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
 			<path d="M12 2V1" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
-			<path d="M12 23V22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
-			<path d="M20 20L19 19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
-			<path d="M20 4L19 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
-			<path d="M4 20L5 19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
-			<path d="M4 4L5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
-			<path d="M1 12L2 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-			></path>
+			<path d="M12 23V22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+			<path d="M20 20L19 19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+			<path d="M20 4L19 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+			<path d="M4 20L5 19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+			<path d="M4 4L5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
+			<path d="M1 12L2 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"></path>
 		</svg>
+		<!-- Moon icon -->
 		<svg
 			aria-hidden="true"
-			class="absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all dark:scale-100 dark:opacity-100"
+			class="theme-icon absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all"
 			fill="none"
 			focusable="false"
-			id="moon-svg"
+			data-icon="dark"
 			stroke="currentColor"
 			stroke-width="1.5"
 			viewBox="0 0 24 24"
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path d="M0 0h24v24H0z" fill="none" stroke="none"></path>
-			<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"
-			></path>
+			<path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z"></path>
 			<path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2"></path>
 			<path d="M19 11h2m-1 -1v2"></path>
 		</svg>
@@ -53,35 +63,50 @@
 </theme-toggle>
 
 <script>
-	// Note that if you fire the theme-change event outside of this component, it will not be reflected in the button's aria-checked attribute. You will need to add an event listener if you want that.
-	import { rootInDarkMode } from "@/utils/domElement";
-
 	class ThemeToggle extends HTMLElement {
 		constructor() {
 			super();
 			const button = this.querySelector<HTMLButtonElement>("button");
+			const icons = this.querySelectorAll<SVGElement>(".theme-icon");
+			const modes = ["system", "light", "dark"] as const;
+			const labels: Record<string, string> = {
+				system: "System theme",
+				light: "Light theme",
+				dark: "Dark theme",
+			};
+
+			function getStoredMode(): string {
+				return (typeof localStorage !== "undefined" && localStorage.getItem("theme-mode")) || "system";
+			}
+
+			function showIcon(mode: string) {
+				icons.forEach((icon) => {
+					if (icon.dataset.icon === mode) {
+						icon.classList.remove("scale-0", "opacity-0");
+						icon.classList.add("scale-100", "opacity-100");
+					} else {
+						icon.classList.add("scale-0", "opacity-0");
+						icon.classList.remove("scale-100", "opacity-100");
+					}
+				});
+				if (button) button.title = labels[mode] || "Toggle theme";
+			}
+
+			// Set initial icon
+			showIcon(getStoredMode());
 
 			if (button) {
-				// set aria role value
-				button.setAttribute("role", "switch");
-				button.setAttribute("aria-checked", String(rootInDarkMode()));
-
-				// button event
 				button.addEventListener("click", () => {
-					// invert theme
-					let themeChangeEvent = new CustomEvent("theme-change", {
-						detail: {
-							theme: rootInDarkMode() ? "light" : "dark",
-						},
-					});
-					// dispatch event -> ThemeProvider.astro
-					document.dispatchEvent(themeChangeEvent);
+					const current = getStoredMode();
+					const currentIdx = modes.indexOf(current as typeof modes[number]);
+					const next = modes[(currentIdx + 1) % modes.length];
 
-					// set the aria-checked attribute
-					button.setAttribute("aria-checked", String(rootInDarkMode()));
+					document.dispatchEvent(new CustomEvent("theme-change", {
+						detail: { theme: next },
+					}));
+
+					showIcon(next);
 				});
-			} else {
-				console.warn("Theme Toggle: No button found");
 			}
 		}
 	}
