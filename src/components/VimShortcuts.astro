@@ -30,16 +30,16 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 <!-- Keyboard shortcuts modal -->
 <dialog
 	id="vim-help"
-	class="bg-global-bg text-global-text fixed inset-0 z-[100] m-auto h-auto max-h-[80vh] w-full max-w-md overflow-y-auto rounded-lg border border-current/10 p-0 font-mono text-sm shadow-2xl backdrop:bg-black/50"
+	class="bg-global-bg text-global-text fixed inset-0 z-[100] m-auto w-full max-w-md rounded-lg border border-current/20 p-0 font-mono text-sm shadow-2xl backdrop:bg-black/50"
 >
-	<div class="sticky top-0 bg-inherit p-5 pb-3">
+	<div class="p-5 pb-3">
 		<h2 class="text-base font-bold">Keyboard shortcuts</h2>
 	</div>
-	<div class="space-y-5 px-5 pb-3">
+	<div class="space-y-4 px-5 pb-3">
 		<!-- Navigation -->
 		<div>
-			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Navigation</p>
-			<div class="space-y-2 text-xs">
+			<p class="text-muted mb-1.5 text-[10px] font-semibold uppercase tracking-[0.15em]">Navigation</p>
+			<div class="space-y-1.5 text-xs">
 				{NAV_SHORTCUTS.map(s => (
 					<div class="flex items-center justify-between">
 						<span>Go to {s.label}</span>
@@ -62,8 +62,8 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		</div>
 		<!-- Actions -->
 		<div>
-			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Actions</p>
-			<div class="space-y-2 text-xs">
+			<p class="text-muted mb-1.5 text-[10px] font-semibold uppercase tracking-[0.15em]">Actions</p>
+			<div class="space-y-1.5 text-xs">
 				<div class="flex items-center justify-between">
 					<span>Search</span>
 					<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">/</kbd>
@@ -79,8 +79,8 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		</div>
 		<!-- Post Lists -->
 		<div>
-			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Post Lists</p>
-			<div class="space-y-2 text-xs">
+			<p class="text-muted mb-1.5 text-[10px] font-semibold uppercase tracking-[0.15em]">Post Lists</p>
+			<div class="space-y-1.5 text-xs">
 				<div class="flex items-center justify-between">
 					<span>Navigate posts</span>
 					<span class="flex items-center gap-0.5">
@@ -96,8 +96,8 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		</div>
 		<!-- Articles -->
 		<div>
-			<p class="text-muted mb-2 text-[10px] font-semibold uppercase tracking-[0.15em]">Articles</p>
-			<div class="space-y-2 text-xs">
+			<p class="text-muted mb-1.5 text-[10px] font-semibold uppercase tracking-[0.15em]">Articles</p>
+			<div class="space-y-1.5 text-xs">
 				<div class="flex items-center justify-between">
 					<span>Jump to nth heading</span>
 					<span class="flex items-center gap-0.5">
@@ -115,12 +115,20 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 					<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">[</kbd>
 				</div>
 				<div class="flex items-center justify-between">
+					<span>Previous / Next item</span>
+					<span class="flex items-center gap-0.5">
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">←</kbd>
+						<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">→</kbd>
+					</span>
+				</div>
+				<div class="flex items-center justify-between">
 					<span>Go back to list</span>
 					<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">Esc</kbd>
 				</div>
 			</div>
 		</div>
-	<div class="text-muted sticky bottom-0 flex items-center gap-1.5 bg-inherit px-5 py-3 text-xs">
+	</div>
+	<div class="text-muted flex items-center gap-1.5 border-t border-current/10 px-5 py-3 text-xs">
 		<kbd class="bg-global-text/8 rounded px-1.5 py-0.5">Esc</kbd>
 		<span>to close</span>
 	</div>
@@ -148,11 +156,11 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		const modKey = document.getElementById("mod-key");
 		if (modKey && isMac) modKey.textContent = "⌘";
 
-		// ── Show list hint — hidden only on /about/ ──────────
+		// ── Show list hint on pages with post lists ──────────
 		if (listHint) {
 			const path = window.location.pathname;
 			const allItems = getListItems();
-			if (path !== '/about/' && allItems.length > 0) {
+			if (allItems.length > 0) {
 				const firstItem = allItems[0];
 				const firstSection = firstItem.closest('section');
 				const container = firstSection?.parentElement;
@@ -200,7 +208,8 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 			for (const list of allLists) {
 				const style = window.getComputedStyle(list);
 				if (style.display === 'flex' || style.display === 'inline-flex') continue;
-				const items = Array.from(list.querySelectorAll('li')).filter(li => li.querySelector('a'));
+				// Only direct children li of this list, to avoid nested lists being counted twice
+				const items = Array.from(list.children).filter(el => el.tagName === 'LI');
 				if (items.length >= 1) {
 					allItems.push(...items);
 				}
@@ -214,9 +223,9 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 			focusIdx = Math.max(0, Math.min(idx, items.length - 1));
 			items.forEach((li) => li.classList.remove("vim-focus"));
 			items[focusIdx].classList.add("vim-focus");
-			items[focusIdx].scrollIntoView({ block: "nearest", behavior: "smooth" });
+			items[focusIdx].scrollIntoView({ block: "center", behavior: "smooth" });
 			const link = items[focusIdx].querySelector("a");
-			if (link) link.focus();
+			if (link) link.focus({ preventScroll: true });
 		}
 
 		document.addEventListener("click", (e) => {
@@ -226,6 +235,17 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 				focusIdx = -1;
 				items.forEach((li) => li.classList.remove("vim-focus"));
 			}
+		});
+
+		// Clear vim focus when user starts using mouse
+		let mouseMoved = false;
+		document.addEventListener("mousemove", () => {
+			if (mouseMoved || focusIdx === -1) return;
+			mouseMoved = true;
+			const items = getListItems();
+			items.forEach((li) => li.classList.remove("vim-focus"));
+			focusIdx = -1;
+			setTimeout(() => { mouseMoved = false; }, 500);
 		});
 
 		// ── Heading navigation ───────────────────────────────
@@ -254,14 +274,24 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 				const searchDialog = document.querySelector("dialog[open]");
 				if (searchDialog) { searchDialog.close(); showBadge("Esc"); return; }
 
-				const path = window.location.pathname;
-				if (path.startsWith("/posts/") && path !== "/posts/") {
+				// Normalize path by removing trailing slash (except for root "/")
+				const rawPath = window.location.pathname;
+				const path = rawPath.length > 1 && rawPath.endsWith("/") ? rawPath.slice(0, -1) : rawPath;
+
+				if (path === "/posts" || path === "/photography" || path === "/work" || path === "/") {
+					// On index pages → go home
+					if (path !== "/") window.location.href = "/";
+				} else if (path.startsWith("/posts/")) {
+					// Individual blog post → back to blog list
 					window.location.href = "/posts/";
-				} else if (path.startsWith("/photography/") && path !== "/photography/") {
+				} else if (path.startsWith("/photography/")) {
+					// Individual photo → back to photography
 					window.location.href = "/photography/";
 				} else if (path.startsWith("/tags/")) {
+					// Tag page → back to blog
 					window.location.href = "/posts/";
-				} else if (path !== "/") {
+				} else {
+					// Anywhere else → home
 					window.location.href = "/";
 				}
 				showBadge("Esc");
@@ -306,6 +336,18 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 				}
 			}
 
+			// ArrowLeft / ArrowRight → prev / next link (photo detail, blog post with prev/next)
+			if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+				const rel = e.key === "ArrowLeft" ? "prev" : "next";
+				const link = document.querySelector(`a[rel="${rel}"]`);
+				if (link) {
+					e.preventDefault();
+					showBadge(e.key === "ArrowLeft" ? "←" : "→");
+					window.location.href = link.href;
+					return;
+				}
+			}
+
 			// j/k list nav
 			if (e.key === "j") {
 				const items = getListItems();
@@ -314,6 +356,26 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 			if (e.key === "k") {
 				const items = getListItems();
 				if (items.length > 0) { focusListItem(Math.max(0, focusIdx - 1)); showBadge("k"); return; }
+			}
+
+			// Enter → open currently vim-focused item (explicit, not relying on browser focus)
+			if (e.key === "Enter") {
+				if (focusIdx >= 0) {
+					const items = getListItems();
+					if (items[focusIdx]) {
+						const link = items[focusIdx].querySelector("a");
+						if (link) {
+							e.preventDefault();
+							showBadge("Enter");
+							if (link.target === "_blank") {
+								window.open(link.href, "_blank", "noreferrer");
+							} else {
+								window.location.href = link.href;
+							}
+							return;
+						}
+					}
+				}
 			}
 // ] → next heading, [ → previous heading
 			if (e.key === "]" || e.key === "[") {
