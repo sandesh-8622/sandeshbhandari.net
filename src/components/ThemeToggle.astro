@@ -1,10 +1,10 @@
 <theme-toggle class="ms-2 sm:ms-4">
 	<button class="hover:text-accent relative h-9 w-9 cursor-pointer rounded-md p-2" type="button" title="System theme">
 		<span class="sr-only">Toggle theme</span>
-		<!-- System icon (monitor) -->
+		<!-- System icon (monitor - shown on desktop/tablet) -->
 		<svg
 			aria-hidden="true"
-			class="theme-icon absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all"
+			class="theme-icon theme-icon-desktop absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all"
 			fill="none"
 			focusable="false"
 			data-icon="system"
@@ -16,6 +16,21 @@
 			<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
 			<line x1="8" y1="21" x2="16" y2="21"></line>
 			<line x1="12" y1="17" x2="12" y2="21"></line>
+		</svg>
+		<!-- System icon (phone - shown on mobile) -->
+		<svg
+			aria-hidden="true"
+			class="theme-icon theme-icon-mobile absolute start-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all"
+			fill="none"
+			focusable="false"
+			data-icon="system"
+			stroke="currentColor"
+			stroke-width="1.5"
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<rect x="6" y="2" width="12" height="20" rx="2" ry="2"></rect>
+			<line x1="11" y1="18" x2="13" y2="18"></line>
 		</svg>
 		<!-- Sun icon -->
 		<svg
@@ -113,3 +128,23 @@
 
 	customElements.define("theme-toggle", ThemeToggle);
 </script>
+
+<style>
+	/* Show monitor icon on desktop (width >= 768px), hide phone icon */
+	.theme-icon-mobile {
+		display: none;
+	}
+	.theme-icon-desktop {
+		display: block;
+	}
+
+	/* Swap on mobile - show phone icon, hide monitor */
+	@media (max-width: 767px) {
+		.theme-icon-mobile {
+			display: block;
+		}
+		.theme-icon-desktop {
+			display: none;
+		}
+	}
+</style>
