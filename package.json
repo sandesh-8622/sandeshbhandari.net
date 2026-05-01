@@ -21,7 +21,7 @@
 		"@astrojs/mdx": "5.0.0",
 		"@astrojs/rss": "4.0.17",
 		"@astrojs/sitemap": "3.7.1",
-		"@sanity/client": "^6.0.0",
+		"@sanity/client": "^7.22.0",
 		"@sanity/image-url": "^1.0.0",
 		"@tailwindcss/vite": "4.2.1",
 		"astro": "6.0.4",
