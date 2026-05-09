@@ -367,11 +367,13 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 						if (link) {
 							e.preventDefault();
 							showBadge("Enter");
-							if (link.target === "_blank") {
-								window.open(link.href, "_blank", "noreferrer");
-							} else {
-								window.location.href = link.href;
-							}
+							setTimeout(() => {
+    if (link.target === "_blank") {
+        link.click();
+    } else {
+        window.location.href = link.href;
+    }
+}, 80);
 							return;
 						}
 					}

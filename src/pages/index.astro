@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import SocialList from "@/components/SocialList.astro";
 import { getAllPosts } from "@/data/post";
+import { projects } from "@/data/projects";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
@@ -26,38 +27,6 @@ const allPhotos = await getCollection("photography");
 const latestPhotos = allPhotos
 	.sort(collectionDateSort)
 	.slice(0, MAX_PHOTOS) as CollectionEntry<"photography">[];
-
-// Projects
-const projects = [
-	{
-		title: "Volunteer IT Technician",
-		subtitle: "3D Technology Department, CFC - Wings to Dreams",
-		description: "I collaborated on creating 3D-printed tools, including tactile models for visually impaired students. Our work garnered national recognition, featuring in major newspapers and articles that highlighted our team's impact.",
-		tags: ["3D Printing", "Research", "Education"],
-		link: "",
-	},
-	{
-		title: "Research Assistant",
-		subtitle: "IAMP, University of Idaho",
-		description: "As an undergraduate research assistant at IAMP, University of Idaho, I collaborate with a team to analyze agricultural data using Python and R, developing climate-resilient models to enhance sustainability and improve yield efficiency.",
-		tags: ["Python", "R", "Data Analysis", "Research"],
-		link: "",
-	},
-	{
-		title: "Video Editor",
-		subtitle: "Content Creation",
-		description: "I created core videos on gaming and philosophy, emphasizing motion graphics, color grading, and sound design using tools like Premiere Pro, DaVinci Resolve, and Photoshop while honing my writing skills.",
-		tags: ["Premiere Pro", "DaVinci Resolve", "Photoshop"],
-		link: "",
-	},
-	{
-		title: "Class 12 NEB Guide App",
-		subtitle: "React Native",
-		description: "I worked as a front-end developer to build a mobile app using React Native. The app featured offline access, advanced search, and real-time updates through CMS, providing students with seamless access to study materials.",
-		tags: ["React Native", "Mobile", "CMS"],
-		link: "https://play.google.com/store/apps/details?id=com.guide.nebtwelve",
-	},
-];
 ---
 
 <PageLayout meta={{ title: "Sandesh Bhandari" }}>
