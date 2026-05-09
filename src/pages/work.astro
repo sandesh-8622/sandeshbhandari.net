@@ -20,9 +20,14 @@ const meta = {
 		<ul class="grid gap-6 sm:grid-cols-2" role="list">
 			{
 				projects.map((project) => (
-					<li class="bg-global-text/5 flex flex-col rounded-md p-5">
+					<li>
 						{project.link ? (
-							<a href={project.link} target="_blank" rel="noreferrer" class="contents">
+							<a
+								href={project.link}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="bg-global-text/5 border-global-text/20 hover:bg-global-text/10 hover:border-global-text/40 flex h-full flex-col rounded-md border p-5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+							>
 								<p class="text-accent mb-1 text-xs font-medium uppercase tracking-wider">
 									{project.subtitle}
 								</p>
@@ -40,7 +45,7 @@ const meta = {
 								</span>
 							</a>
 						) : (
-							<>
+							<div class="bg-global-text/5 border-global-text/20 flex h-full flex-col rounded-md border p-5">
 								<p class="text-accent mb-1 text-xs font-medium uppercase tracking-wider">
 									{project.subtitle}
 								</p>
@@ -53,7 +58,7 @@ const meta = {
 									))}
 								</div>
 								<p class="mb-4 flex-1 text-sm leading-relaxed">{project.description}</p>
-							</>
+							</div>
 						)}
 					</li>
 				))
