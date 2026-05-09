@@ -1,9 +1,7 @@
 # how i built sandeshbhandari.net
 
-a personal site i actually built, not bought
-2026 April 18
-·
-15 min read
+a personal site
+
 `astro` `sanity` `typescript` `tailwind`
 
 so i got tired of linkedin being my entire online presence. one day i just decided i wanted something that was actually mine - a place to write, to show off photos, to list projects without having to compete with "5 reasons why you should hire a developer" slop in the linkedin feed. what i ended up with is this: an astro site with a sanity cms, a photography gallery, some keyboard shortcuts that nobody asked for, and a snoopy mascot.
