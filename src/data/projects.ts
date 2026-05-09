@@ -11,7 +11,7 @@ export const projects: Project[] = [
 		title: "Marketing Assistant & Web Maintainer",
 		subtitle: "Luther College, Decorah, IA",
 		description:
-			"I produce and publish multi-platform content for the college — press releases, blog posts, social media, and newsletters — and conduct interviews and manage editorial calendars to align coverage with institutional priorities. I also build and maintain responsive UI components and manage content updates for the computer science department's web resources, serving 1,400+ students.",
+			"I produce and publish multi-platform content for the college such as press releases, blog posts, social media, and newsletters and conduct interviews and manage editorial calendars to align coverage with institutional priorities. I also build and maintain responsive UI components and manage content updates for the computer science department's web resources, serving 1,400+ students.",
 		tags: ["Web Development", "Content", "Editorial", "UI"],
 		link: "",
 	},
@@ -75,7 +75,7 @@ export const projects: Project[] = [
 		title: "FilmRecs",
 		subtitle: "Movie recommendation engine",
 		description:
-			"A movie recommendation engine that builds a user taste profile and ranks the closest matches across 3,652 films using TF-IDF vectorization and cosine similarity. I preprocessed and vectorized movie metadata — genres, descriptions, tags — with Pandas and Scikit-learn to generate the sparse feature matrices used for similarity scoring. Deployed as a live demo on Hugging Face Spaces.",
+			"A movie recommendation engine that builds a user taste profile and ranks the closest matches across 3,652 films using TF-IDF vectorization and cosine similarity. I preprocessed and vectorized movie metadata such as genres, descriptions, tags with Pandas and Scikit-learn to generate the sparse feature matrices used for similarity scoring. Deployed as a live demo on Hugging Face Spaces.",
 		tags: ["Python", "Scikit-learn", "Pandas", "TF-IDF", "ML"],
 		link: "https://huggingface.co/spaces/sandeshbhandari/FilmRecs",
 	},
