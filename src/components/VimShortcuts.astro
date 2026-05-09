@@ -368,7 +368,7 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 							e.preventDefault();
 							showBadge("Enter");
 							if (link.target === "_blank") {
-								window.open(link.href, "_blank", "noreferrer");
+								link.click();
 							} else {
 								window.location.href = link.href;
 							}
