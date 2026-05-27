@@ -8,6 +8,22 @@ export type Project = {
 
 export const projects: Project[] = [
 	{
+		title: "Supply Chain Analyst Intern",
+		subtitle: "Norplex-Micarta, Postville, IA",
+		description:
+			"As a Supply Chain Analyst Intern at Norplex-Micarta, I build KPI reports on procurement costs, delivery performance, and vendor reliability within the XA and AMMS ERP systems. I'm also developing a paperless internal requisition workflow and supporting cross-functional procurement and logistics projects.",
+		tags: ["Supply Chain", "ERP Systems", "Data Analytics", "Procurement"],
+		link: "",
+	},
+	{
+		title: "Open Source Contributor – LFX Mentorship",
+		subtitle: "Magma Core, The Linux Foundation",
+		description:
+			"As an LFX Mentorship mentee with the Linux Foundation, I contribute code to Magma, an open-source platform for building and deploying mobile core networks.",
+		tags: ["Open Source", "Magma", "Linux Foundation", "Mobile Networks"],
+		link: "",
+	},
+	{
 		title: "Marketing Assistant & Web Maintainer",
 		subtitle: "Luther College, Decorah, IA",
 		description:
@@ -32,20 +48,12 @@ export const projects: Project[] = [
 		link: "",
 	},
 	{
-		title: "Full-Stack Developer",
-		subtitle: "Scalebit Technologies, Kathmandu",
+		title: "Surgical Needle Insertion RL Environment",
+		subtitle: "Reinforcement learning for robotic needle steering",
 		description:
-			"I built an offline-capable mobile learning app serving over 5,000 users using React Native and a local-first data sync architecture. I also implemented interaction logging with Node.js and Express, tracking dwell-time and click-through rates to inform content ranking.",
-		tags: ["React Native", "Node.js", "Express", "Mobile"],
-		link: "",
-	},
-	{
-		title: "Video Editor",
-		subtitle: "Content Creation",
-		description:
-			"I created core videos on gaming and philosophy, emphasizing motion graphics, color grading, and sound design using tools like Premiere Pro, DaVinci Resolve, and Photoshop while honing my writing skills.",
-		tags: ["Premiere Pro", "DaVinci Resolve", "Photoshop"],
-		link: "",
+			"A reinforcement learning environment that trains a PPO agent (Stable-Baselines3) to insert a needle through layered soft tissue without causing damage. I modeled the tissue with Kelvin-Voigt viscoelastic mechanics to capture how real layered tissue resists and relaxes under load, randomized blood vessel placement on every episode, and built a 15-dimensional observation space encoding needle state, strain, force, and proximity to vasculature. The reward function is biologically informed with clinically cited thresholds — 20% max tissue strain, 4 N max insertion force, 3 mm minimum vascular clearance — and every episode emits structured FDA-format JSON evidence logs to support regulatory submission workflows.",
+		tags: ["Python", "Reinforcement Learning", "PPO", "Stable-Baselines3", "Simulation"],
+		link: "https://goldfish.sandeshbhandari.com/docs",
 	},
 	{
 		title: "Class 12 NEB Science Guide",
