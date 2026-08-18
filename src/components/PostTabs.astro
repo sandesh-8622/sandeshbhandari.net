@@ -1,0 +1,32 @@
+---
+import { Icon } from "astro-icon/components";
+
+const pathname = Astro.url.pathname;
+
+const tabs = [
+	{ path: "/posts/", label: "Posts", icon: "mdi:grid" },
+	{ path: "/reposts/", label: "Reposts", icon: "mdi:repeat" },
+];
+---
+
+<nav aria-label="Content tabs" class="flex items-center gap-10">
+	{
+		tabs.map((tab) => {
+			const active = pathname.startsWith(tab.path);
+			return (
+				<a
+					aria-current={active ? "page" : false}
+					class={`-mb-px flex items-center gap-1.5 border-b-2 pb-2 font-semibold ${
+						active
+							? "border-global-text text-global-text"
+							: "text-muted hover:text-global-text border-transparent"
+					}`}
+					href={tab.path}
+				>
+					<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name={tab.icon} />
+					{tab.label}
+				</a>
+			);
+		})
+	}
+</nav>

@@ -414,5 +414,12 @@ import { NAV_SHORTCUTS, PREFIX_TIMEOUT } from "@/data/shortcuts";
 		outline: 2px solid var(--color-accent, #2bbc89);
 		outline-offset: 2px;
 		border-radius: 4px;
+		box-shadow: 0 0 0 2px var(--color-global-text);
+	}
+
+	/* the li provides the ring; suppress the native link ring inside it */
+	.vim-focus a:focus,
+	.vim-focus a:focus-visible {
+		outline: none;
 	}
 </style>

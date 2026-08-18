@@ -6,20 +6,20 @@ export type Project = {
 	link: string;
 };
 
-export const projects: Project[] = [
+export const work: Project[] = [
 	{
-		title: "Supply Chain Analyst Intern",
-		subtitle: "Norplex-Micarta, Postville, IA",
+		title: "Data Analyst Intern",
+		subtitle: "Norplex-Micarta, Postville, IA · May 2026 – Present",
 		description:
-			"As a Supply Chain Analyst Intern at Norplex-Micarta, I build KPI reports on procurement costs, delivery performance, and vendor reliability within the XA and AMMS ERP systems. I'm also developing a paperless internal requisition workflow and supporting cross-functional procurement and logistics projects.",
-		tags: ["Supply Chain", "ERP Systems", "Data Analytics", "Procurement"],
+			"🚚 Tracking procurement costs, delivery, and vendor performance with ERP data\n🐼 Building reports and dashboards with Power BI, Excel, and Pandas",
+		tags: ["Data Analytics", "ERP Systems", "Procurement", "Automation"],
 		link: "",
 	},
 	{
 		title: "Open Source Contributor – LFX Mentorship",
 		subtitle: "Magma Core, The Linux Foundation",
 		description:
-			"As an LFX Mentorship mentee with the Linux Foundation, I contribute code to Magma, an open-source platform for building and deploying mobile core networks.",
+			"📡 Contributing code to an open-source mobile core network\n📶 Working on software for building and deploying mobile networks",
 		tags: ["Open Source", "Magma", "Linux Foundation", "Mobile Networks"],
 		link: "",
 	},
@@ -27,15 +27,15 @@ export const projects: Project[] = [
 		title: "Marketing Assistant & Web Maintainer",
 		subtitle: "Luther College, Decorah, IA",
 		description:
-			"I produce and publish multi-platform content for the college such as press releases, blog posts, social media, and newsletters and conduct interviews and manage editorial calendars to align coverage with institutional priorities. I also build and maintain responsive UI components and manage content updates for the computer science department's web resources, serving 1,400+ students.",
+			"✍️ Writing press releases, articles, newsletters, and social media content\n💻 Maintaining web resources used by 1,400+ computer science students",
 		tags: ["Web Development", "Content", "Editorial", "UI"],
 		link: "",
 	},
 	{
-		title: "Research Assistant",
+		title: "Undergraduate Research Assistant",
 		subtitle: "University of Idaho – Data Analytics & Vision Lab (IAMP)",
 		description:
-			"As a research assistant at the University of Idaho's Data Analytics & Vision Lab, I wrote Python scripts to clean and process over 50,000 rows of agricultural sensor data, feeding it into PostgreSQL for downstream analysis. I trained crop-yield prediction models with Scikit-learn and iterated on feature selection to improve NDCG scores by 15% over baseline, and deployed OpenCV-based image processing pipelines on Raspberry Pi devices for field-level time-series data collection.",
+			"🌾 Processing 50,000+ agricultural sensor records with Python and PostgreSQL\n🛰️ Training crop-yield models and building computer vision pipelines",
 		tags: ["Python", "Scikit-learn", "PostgreSQL", "OpenCV", "Research"],
 		link: "",
 	},
@@ -43,31 +43,26 @@ export const projects: Project[] = [
 		title: "IT Technician & Volunteer",
 		subtitle: "Chain For Change – Project Wings to Dreams, Nepal",
 		description:
-			"I designed and 3D-printed tactile learning models for visually impaired students using Blender and OpenCV for shape calibration, and our work earned coverage in national newspapers. I also authored concept papers on inclusive educational technology and collaborated with accessibility teams to iterate on physical prototypes based on student feedback.",
+			"👁️ Designing tactile learning tools for visually impaired students\n🧩 Building physical prototypes with Blender, OpenCV, and 3D printing",
 		tags: ["3D Printing", "Blender", "OpenCV", "Education"],
 		link: "",
 	},
+];
+
+export const projects: Project[] = [
 	{
 		title: "Surgical Needle Insertion RL Environment",
 		subtitle: "Reinforcement learning for robotic needle steering",
 		description:
-			"A reinforcement learning environment that trains a PPO agent (Stable-Baselines3) to insert a needle through layered soft tissue without causing damage. I modeled the tissue with Kelvin-Voigt viscoelastic mechanics to capture how real layered tissue resists and relaxes under load, randomized blood vessel placement on every episode, and built a 15-dimensional observation space encoding needle state, strain, force, and proximity to vasculature. The reward function is biologically informed with clinically cited thresholds — 20% max tissue strain, 4 N max insertion force, 3 mm minimum vascular clearance — and every episode emits structured FDA-format JSON evidence logs to support regulatory submission workflows.",
+			"🩺 Training reinforcement learning agents for robotic needle insertion\n🧬 Simulating tissue mechanics, force, strain, and blood vessel proximity",
 		tags: ["Python", "Reinforcement Learning", "PPO", "Stable-Baselines3", "Simulation"],
 		link: "https://goldfish.sandeshbhandari.com/docs",
-	},
-	{
-		title: "Class 12 NEB Science Guide",
-		subtitle: "Cross-platform mobile study app",
-		description:
-			"I shipped a cross-platform mobile study app to the Google Play Store with 10K+ downloads and a 4.2★ rating, covering Physics, Chemistry, and Biology for Nepal's national exam board. I architected a local-first data sync system with React Native for offline access, and built interaction logging via Node.js and Express to track engagement and inform content ranking.",
-		tags: ["React Native", "Node.js", "Express", "Mobile"],
-		link: "https://play.google.com/store/apps/details?id=com.guide.nebtwelve",
 	},
 	{
 		title: "INFINI8",
 		subtitle: "Browser-based infinite driving experience",
 		description:
-			"A Three.js infinite procedural driving experience where the road never ends. Terrain, road curvature, and atmosphere are all generated in real time via fractional Brownian motion with no loading pauses. I integrated the Spotify Web Playback SDK to stream music in-game with live synced lyrics rendered on screen in any language, and engineered full vehicle physics, 7 camera modes, and 4 dynamic weather states. Runs fully in the browser on desktop and mobile with no install.",
+			"🏎️ Building an endless 3D driving world with procedural terrain and physics\n🎵 Adding Spotify, live lyrics, weather, and multiple camera modes",
 		tags: ["Three.js", "JavaScript", "Spotify Web SDK", "Procedural Generation"],
 		link: "https://infini8.sandeshbhandari.com/",
 	},
@@ -75,7 +70,7 @@ export const projects: Project[] = [
 		title: "Bee My Baby",
 		subtitle: "Pure CSS 3D animation",
 		description:
-			"A small experiment in 3D without any libraries: a bee built from cube faces dances around a spinning Minecraft grass block topped with a rose, all in sync to the song Bee My Baby. Just HTML, CSS transforms, and a few lines of JavaScript to start the music.",
+			"🧱 Building a 3D animation using only HTML, CSS, and JavaScript\n🐝 Animating a bee and its environment entirely with CSS transforms",
 		tags: ["CSS 3D", "Animation", "HTML", "JavaScript"],
 		link: "https://beemybaby.sandeshbhandari.com/",
 	},
@@ -83,7 +78,7 @@ export const projects: Project[] = [
 		title: "FilmRecs",
 		subtitle: "Movie recommendation engine",
 		description:
-			"A movie recommendation engine that builds a user taste profile and ranks the closest matches across 3,652 films using TF-IDF vectorization and cosine similarity. I preprocessed and vectorized movie metadata such as genres, descriptions, tags with Pandas and Scikit-learn to generate the sparse feature matrices used for similarity scoring. Deployed as a live demo on Hugging Face Spaces.",
+			"🎬 Building a movie recommender across 3,652 films\n🎯 Using Pandas, TF-IDF, and cosine similarity to rank recommendations",
 		tags: ["Python", "Scikit-learn", "Pandas", "TF-IDF", "ML"],
 		link: "https://huggingface.co/spaces/sandeshbhandari/FilmRecs",
 	},
@@ -91,7 +86,7 @@ export const projects: Project[] = [
 		title: "Nonsense CS Research Gen",
 		subtitle: "Fake academic CS paper generator",
 		description:
-			"Type your name, get back a real-looking two-column PDF of a fake CS paper. Your name is hashed into a deterministic seed that picks your university from a list of 1000 ranked institutions, generates co-authors from a 4921 name dictionary, and chooses vocabulary biased by real interview frequency data scraped from 416 companies. Includes matplotlib charts, a comparison table, 12 fake references named after real algorithm inventors, and a programmer joke buried in the abstract.",
+			"🧪 Generating realistic academic papers from procedural data and text\n📄 Creating two-column PDFs with charts, tables, and references",
 		tags: ["Python", "ReportLab", "Matplotlib", "PDF Generation"],
 		link: "https://github.com/sandesh-8622/nonsense-cs-research-gen",
 	},
@@ -99,7 +94,7 @@ export const projects: Project[] = [
 		title: "medium2pdf-scraper",
 		subtitle: "Archive a Medium author's full back catalog",
 		description:
-			"A command-line tool that scrolls a Medium profile, finds every article ever published, renders each one as a clean searchable PDF, then merges everything into a single bookmarked PDF inside a zip. Drives a real Chrome instance via Playwright to get past Cloudflare bot checks. Built for feeding an author's full body of work into an LLM for personal research.",
+			"🗃️ Archiving every article from a Medium author's profile\n📎 Automating scraping, PDF rendering, merging, and bookmarking",
 		tags: ["Python", "Playwright", "PDF", "Web Scraping"],
 		link: "https://github.com/sandesh-8622/medium2pdf-scraper",
 	},
@@ -107,7 +102,7 @@ export const projects: Project[] = [
 		title: "Posture Coach",
 		subtitle: "Real-time posture monitor with webcam",
 		description:
-			"A real-time posture monitoring tool that watches how you sit using OpenCV, MediaPipe, and webcam input. It scores your posture from 0 to 100 by measuring forward head angle, shoulder tilt, spine lean, and neck compression every frame, sends desktop alerts when posture stays bad too long, and displays a live tracking dashboard built with Flask, including a weekly heatmap and history chart. Runs entirely locally with no cloud dependency.",
+			"🧍 Tracking posture in real time using webcam computer vision\n📐 Scoring posture, sending alerts, and visualizing weekly history",
 		tags: ["Python", "OpenCV", "MediaPipe", "Flask", "Computer Vision"],
 		link: "https://github.com/sandesh-8622/posturecoach",
 	},
@@ -115,7 +110,7 @@ export const projects: Project[] = [
 		title: "Subreddit Image Downloader",
 		subtitle: "Bulk download from any public subreddit",
 		description:
-			"A Node.js CLI that bulk downloads images, GIFs, and videos from any public subreddit using Reddit's public JSON API and packages them into a zip file. No login, OAuth, or API key required. Handles gallery posts with multiple images, supports filtering by sort and time window, and has an images-only mode that skips GIFs and videos.",
+			"👽 Building a CLI to bulk download media from public subreddits\n🗂️ Handling galleries, filters, videos, GIFs, and zip packaging",
 		tags: ["Node.js", "JavaScript", "CLI", "Reddit API"],
 		link: "https://github.com/sandesh-8622/subreddit-image-downloader",
 	},

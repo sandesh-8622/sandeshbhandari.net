@@ -38,6 +38,20 @@ const post = defineCollection({
 		}),
 });
 
+const repost = defineCollection({
+	loader: glob({ base: "./src/content/repost", pattern: "**/*.{md,mdx}" }),
+	schema: baseSchema.extend({
+		url: z.string().url(),
+		author: z.string().optional(),
+		kind: z.enum(["blog", "paper"]).default("blog"),
+		note: z.string().optional(),
+		publishDate: z
+			.string()
+			.or(z.date())
+			.transform((val) => new Date(val)),
+	}),
+});
+
 const photography = defineCollection({
 	loader: glob({ base: "./src/content/photography", pattern: "**/*.{md,mdx}" }),
 	schema: baseSchema.extend({
@@ -59,4 +73,4 @@ const tag = defineCollection({
 	}),
 });
 
-export const collections = { post, photography, tag };
+export const collections = { post, photography, repost, tag };

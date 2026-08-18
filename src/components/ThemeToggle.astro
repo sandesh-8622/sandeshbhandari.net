@@ -114,7 +114,7 @@
 				button.addEventListener("click", () => {
 					const current = getStoredMode();
 					const currentIdx = modes.indexOf(current as typeof modes[number]);
-					const next = modes[(currentIdx + 1) % modes.length];
+					const next = modes[(currentIdx + 1) % modes.length] ?? "system";
 
 					document.dispatchEvent(new CustomEvent("theme-change", {
 						detail: { theme: next },
