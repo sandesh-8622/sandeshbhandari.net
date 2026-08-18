@@ -3,7 +3,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import SocialList from "@/components/SocialList.astro";
 import { getAllPosts } from "@/data/post";
-import { projects } from "@/data/projects";
+import { work } from "@/data/projects";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
@@ -128,7 +128,7 @@ const latestPhotos = allPhotos
 		</h2>
 		<ul class="grid gap-4 sm:grid-cols-2" role="list">
 			{
-				projects.map((project) => (
+				work.map((project) => (
 					<li class="bg-global-text/5 flex flex-col rounded-md p-5">
 						<a
 							href={project.link || "/work/"}
@@ -158,5 +158,8 @@ const latestPhotos = allPhotos
 				))
 			}
 		</ul>
+		<div class="mt-6 text-right">
+			<a href="/work/" class="cactus-link text-sm">more &rarr;</a>
+		</div>
 	</section>
 </PageLayout>

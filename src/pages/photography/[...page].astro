@@ -41,28 +41,30 @@ const paginationProps = {
 <PageLayout meta={meta}>
 	<section>
 		<h1 class="title mb-8">Photography</h1>
-		<ul class="masonry" role="list">
+		<ul class="grid grid-cols-2 gap-2 md:grid-cols-3" role="list">
 			{
 				page.data.map((photo, i) => (
-					<li class="masonry-item">
+					<li>
 						<a
 							href={`/photography/${photo.id}/`}
-							class="group block"
+							class="group relative block aspect-square overflow-hidden rounded-sm"
 						>
 							<img
 								src={photo.data.src}
 								alt={photo.data.alt}
-								class="w-full rounded-lg object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+								class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
 								loading={i < 6 ? "eager" : "lazy"}
 								decoding="async"
 							/>
-							<div class="masonry-overlay">
-								<p class="text-sm font-medium text-white">{photo.data.title}</p>
-								{photo.data.category && (
-									<span class="text-[10px] uppercase tracking-wider text-white/60">
-										{photo.data.category}
-									</span>
-								)}
+							<div class="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+								<div class="p-4">
+									<p class="text-sm font-medium text-white">{photo.data.title}</p>
+									{photo.data.category && (
+										<span class="text-xs uppercase tracking-wider text-white/70">
+											{photo.data.category}
+										</span>
+									)}
+								</div>
 							</div>
 						</a>
 					</li>
@@ -72,59 +74,3 @@ const paginationProps = {
 		<Pagination {...paginationProps} />
 	</section>
 </PageLayout>
-
-<style>
-	.masonry {
-		columns: 2;
-		column-gap: 0.5rem;
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	@media (min-width: 768px) {
-		.masonry {
-			columns: 3;
-			column-gap: 0.625rem;
-		}
-	}
-
-	.masonry-item {
-		break-inside: avoid;
-		margin-bottom: 0.5rem;
-		position: relative;
-		overflow: hidden;
-		border-radius: 0.5rem;
-	}
-
-	@media (min-width: 768px) {
-		.masonry-item {
-			margin-bottom: 0.625rem;
-		}
-	}
-
-	/* Reserve vertical space so masonry columns don't reflow
-	   when images below load in and change height */
-	.masonry-item img {
-		min-height: 200px;
-		background-color: rgb(0 0 0 / 0.04);
-		display: block;
-	}
-
-	.masonry-overlay {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		padding: 0.75rem;
-		background: linear-gradient(to top, rgba(0,0,0,0.55), transparent 50%);
-		opacity: 0;
-		transition: opacity 0.3s ease;
-		border-radius: 0.5rem;
-	}
-
-	.masonry-item:hover .masonry-overlay {
-		opacity: 1;
-	}
-</style>

@@ -1,25 +1,25 @@
 ---
-import { projects } from "@/data/projects";
+import { projects, work } from "@/data/projects";
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-	description: "Projects and experience by Sandesh Bhandari",
-	title: "My Projects",
+	description: "Work experience by Sandesh Bhandari",
+	title: "Work",
 };
 ---
 
 <PageLayout meta={meta}>
 	<section>
 		<div class="mb-12">
-			<h1 class="title mb-4">My Projects</h1>
+			<h1 class="title mb-4">Work</h1>
 			<p>
-				Here are some of the projects that I've made while I was learning
-				some new technologies/frameworks or any libraries.
+				Here are the roles I've worked in, from internships and research
+				assistantships to open-source contributions.
 			</p>
 		</div>
 		<ul class="grid gap-6 sm:grid-cols-2" role="list">
 			{
-				projects.map((project) => (
+				work.map((project) => (
 					<li class="bg-global-text/5 flex flex-col rounded-md p-5">
 						{project.link ? (
 							<a href={project.link} target="_blank" rel="noreferrer" class="contents">
@@ -34,7 +34,11 @@ const meta = {
 										</span>
 									))}
 								</div>
-								<p class="mb-4 flex-1 text-sm leading-relaxed">{project.description}</p>
+								<div class="mb-4 space-y-1.5">
+									{project.description.split("\n").map((line) => (
+										<p class="text-sm leading-relaxed">{line}</p>
+									))}
+								</div>
 								<span class="cactus-link mt-auto inline-block text-sm">
 									Check Out &rarr;
 								</span>
@@ -52,7 +56,70 @@ const meta = {
 										</span>
 									))}
 								</div>
-								<p class="mb-4 flex-1 text-sm leading-relaxed">{project.description}</p>
+								<div class="mb-4 space-y-1.5">
+									{project.description.split("\n").map((line) => (
+										<p class="text-sm leading-relaxed">{line}</p>
+									))}
+								</div>
+							</>
+						)}
+					</li>
+				))
+			}
+		</ul>
+	</section>
+	<section class="mt-16">
+		<div class="mb-12">
+			<h2 class="title mb-4">Projects</h2>
+			<p>
+				Things I've built for fun and for learning, while playing around with
+				new technologies, frameworks, and libraries.
+			</p>
+		</div>
+		<ul class="grid gap-6 sm:grid-cols-2" role="list">
+			{
+				projects.map((project) => (
+					<li class="bg-global-text/5 flex flex-col rounded-md p-5">
+						{project.link ? (
+							<a href={project.link} target="_blank" rel="noreferrer" class="contents">
+								<p class="text-accent mb-1 text-xs font-medium uppercase tracking-wider">
+									{project.subtitle}
+								</p>
+								<h3 class="mb-3 text-lg font-medium">{project.title}</h3>
+								<div class="mb-3 flex flex-wrap gap-1.5">
+									{project.tags.map((tag) => (
+										<span class="bg-global-text/10 rounded px-2 py-0.5 text-xs">
+											{tag}
+										</span>
+									))}
+								</div>
+								<div class="mb-4 space-y-1.5">
+									{project.description.split("\n").map((line) => (
+										<p class="text-sm leading-relaxed">{line}</p>
+									))}
+								</div>
+								<span class="cactus-link mt-auto inline-block text-sm">
+									Check Out &rarr;
+								</span>
+							</a>
+						) : (
+							<>
+								<p class="text-accent mb-1 text-xs font-medium uppercase tracking-wider">
+									{project.subtitle}
+								</p>
+								<h3 class="mb-3 text-lg font-medium">{project.title}</h3>
+								<div class="mb-3 flex flex-wrap gap-1.5">
+									{project.tags.map((tag) => (
+										<span class="bg-global-text/10 rounded px-2 py-0.5 text-xs">
+											{tag}
+										</span>
+									))}
+								</div>
+								<div class="mb-4 space-y-1.5">
+									{project.description.split("\n").map((line) => (
+										<p class="text-sm leading-relaxed">{line}</p>
+									))}
+								</div>
 							</>
 						)}
 					</li>

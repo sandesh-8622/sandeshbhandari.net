@@ -1,8 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
-import PageLayout from "@/layouts/Base.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
+import PageLayout from "@/layouts/Base.astro";
 
 export const getStaticPaths = (async () => {
 	const allPhotos = await getCollection("photography");
@@ -27,23 +27,23 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<article class="mx-auto max-w-4xl" data-pagefind-body>
+	<article class="mx-auto -mt-14 max-w-4xl" data-pagefind-body>
 		<div class="mb-6">
 			<a href="/photography/" class="cactus-link text-sm">&larr; Back to Gallery</a>
 		</div>
 		<figure>
-			<div class="overflow-hidden rounded-sm">
+			<div class="flex min-h-[75vh] items-center justify-center overflow-hidden rounded-sm">
 				<img
 					src={photo.data.src}
 					alt={photo.data.alt}
-					class="h-auto w-full object-contain"
+					class="max-h-[75vh] w-auto max-w-full object-contain"
 					loading="eager"
 				/>
 			</div>
-			<figcaption class="mt-4 space-y-2">
+			<figcaption class="mt-4 space-y-2 text-center">
 				<h1 class="title">{photo.data.title}</h1>
 				{photo.data.description && <p class="text-muted">{photo.data.description}</p>}
-				<div class="flex flex-wrap items-center gap-4 text-sm">
+				<div class="flex flex-wrap items-center justify-center gap-4 text-sm">
 					{
 						photo.data.category && (
 							<span class="bg-global-text/5 inline-block rounded-md px-2 py-1 text-xs uppercase tracking-wider">
@@ -77,3 +77,20 @@ const meta = {
 		</nav>
 	</article>
 </PageLayout>
+
+<script>
+	// Open the page with the photo vertically centered in the viewport,
+	// but never scroll so far that "Back to Gallery" gets clipped.
+	const article = document.querySelector("article");
+	const figure = document.querySelector("figure");
+	if (article && figure) {
+		requestAnimationFrame(() => {
+			const figureRect = figure.getBoundingClientRect();
+			const figureCenter = figureRect.top + window.scrollY + figureRect.height / 2;
+			const centerScroll = figureCenter - window.innerHeight / 2;
+			const articleTop = article.getBoundingClientRect().top + window.scrollY;
+			const maxScroll = Math.max(0, articleTop - 8);
+			window.scrollTo({ top: Math.max(0, Math.min(centerScroll, maxScroll)), behavior: "instant" });
+		});
+	}
+</script>

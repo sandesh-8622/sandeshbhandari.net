@@ -1,0 +1,94 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { GetStaticPaths, Page } from "astro";
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import FormattedDate from "@/components/FormattedDate.astro";
+import Pagination from "@/components/Paginator.astro";
+import PostTabs from "@/components/PostTabs.astro";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const MAX_REPOSTS_PER_PAGE = 10;
+	const reposts = (await getCollection("repost")).sort(collectionDateSort);
+	return paginate(reposts, { pageSize: MAX_REPOSTS_PER_PAGE });
+}) satisfies GetStaticPaths;
+
+interface Props {
+	page: Page<CollectionEntry<"repost">>;
+}
+
+const { page } = Astro.props;
+
+const meta = {
+	description: "My fav reads, reposted",
+	title: "Reposts",
+};
+
+const paginationProps = {
+	...(page.url.prev && {
+		prevUrl: {
+			text: "← Previous Page",
+			url: page.url.prev,
+		},
+	}),
+	...(page.url.next && {
+		nextUrl: {
+			text: "Next Page →",
+			url: page.url.next,
+		},
+	}),
+};
+
+const groupedByYear: Record<number, CollectionEntry<"repost">[]> = {};
+for (const repost of page.data) {
+	const year = repost.data.publishDate.getFullYear();
+	(groupedByYear[year] ??= []).push(repost);
+}
+const descYearKeys = Object.keys(groupedByYear)
+	.map(Number)
+	.sort((a, b) => b - a);
+---
+
+<PageLayout meta={meta}>
+	<div class="mb-12 flex items-center gap-4">
+		<PostTabs />
+		<a class="text-accent" href="/reposts.xml" target="_blank">
+			<span class="sr-only">Reposts RSS feed</span>
+			<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:rss" />
+		</a>
+	</div>
+	{
+		descYearKeys.map((yearKey) => (
+			<section class="mb-16">
+				<h2 id={`year-${yearKey}`} class="title text-lg">
+					<span class="sr-only">Reposts in</span>
+					{yearKey}
+				</h2>
+				<ul class="mt-5 space-y-4 text-start">
+					{groupedByYear[yearKey]?.map(({ data }) => (
+						<li class="grid gap-1 sm:grid-cols-[auto_1fr] sm:[&_q]:col-start-2">
+							<FormattedDate class="text-muted min-w-30 font-semibold" date={data.publishDate} />
+							<div class="flex flex-wrap items-center gap-x-2">
+								<Icon
+									aria-hidden="true"
+									class="h-4 w-4 shrink-0 text-red-600 dark:text-green-500"
+									focusable="false"
+									name="mdi:repeat"
+								/>
+								<a class="cactus-link" href={data.url} rel="noreferrer" target="_blank">
+									{data.title}
+								</a>
+								{data.author && <span class="text-muted">· {data.author}</span>}
+								<span class="text-muted text-xs uppercase tracking-wide">· {data.kind}</span>
+							</div>
+							{data.note && <q class="line-clamp-3 italic">{data.note}</q>}
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+	<Pagination {...paginationProps} />
+</PageLayout>
